@@ -1,0 +1,7 @@
+{
+  "name" : "magento_module_backup_shell2",
+  "repositories" : [ {
+    "type" : "composer",
+    "url" : "https://packagist.org/"
+  } ]
+}

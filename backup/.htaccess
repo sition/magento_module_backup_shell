@@ -1,0 +1,11 @@
+############################################
+## By default allow no
+order deny,allow
+deny from all
+allow from 87.251.56.34  ## dennis
+allow from 88.159.82.163  ## michel 
+allow from 84.27.236.190
+allow from 127.0.0.1
+allow from 192.168.1.1
+allow from 46.44.173.89 ## sition den bosch
+allow from 84.31.66.70 ## frans broeders

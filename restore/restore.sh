@@ -5,40 +5,30 @@
 ####################################################################
 # restore.sh - put in resore folder
 
-#######################
-# DATABASE CONFIG
-DOMAINNAME="deterra.sition-klanten.nl"
-PREFIX=""
-DBHOST="localhost"
-DBNAME="deterra"
-DBUSER="deterra" 
-DBPASSWORD="pFtXBHLFRbIGjwPN"
+echo "Reading config...." >&2
+source config.cfg
 
-#######################
-# Config Directories
-HOMEDIR=/home/deterra
 BINDIR=$HOMEDIR/bin
 BAKDIR=$HOMEDIR/backup
 # path from homedir to magento folder
-DOCDIR=public_html
-SOURCE=www.deterra.nl
+
 
 TIMESTAMP=$(date +%Y%m%d)
 
-echo "################### getting database files ################### "
+echo "################### getting database files ################### \n\n"
 cd $HOMEDIR/$DOCDIR 
 wget http://$SOURCE/backup/$TIMESTAMP-db.sql -N
 
-echo "################### getting public_html files ################### " 
+echo "################### getting public_html files ################### \n\n" 
 wget http://$SOURCE/backup/$TIMESTAMP-public_html.tgz -N
 
-echo "################### getting media files ################### " 
+echo "################### getting media files ################### \n\n" 
 wget http://$SOURCE/backup/$TIMESTAMP-media.tgz -N
 
-echo "################### extracting website###################  " 
+echo "################### extracting website################### \n\n " 
 tar -xzvf $HOMEDIR/$DOCDIR/$TIMESTAMP-public_html.tgz
 
-echo "################### extracting media folder ################### " 
+echo "################### extracting media folder ################### \n\n" 
 tar -xzvf $HOMEDIR/$DOCDIR/$TIMESTAMP-media.tgz
 
 cd $HOMEDIR/$DOCDIR/app/etc/
@@ -84,13 +74,13 @@ echo "<config>
     </admin>
 </config>" > local.xml
 
-echo "################### restore database & update domain ################### "
+echo "################### restore database & update domain ################### \n"
 cd $HOMEDIR/$DOCDIR
 mysql -h $DBHOST -u $DBUSER -D $DBNAME -p$DBPASSWORD -Bse "SET FOREIGN_KEY_CHECKS = 0; source $TIMESTAMP-db.sql;SET FOREIGN_KEY_CHECKS = 1;exit"
 mysql -h $DBHOST -u $DBUSER -D $DBNAME -p$DBPASSWORD -Bse "UPDATE core_config_data SET value ='http://$DOMAINNAME/' WHERE path ='web/unsecure/base_url';exit"
 mysql -h $DBHOST -u $DBUSER -D $DBNAME -p$DBPASSWORD -Bse "UPDATE core_config_data SET value ='http://$DOMAINNAME/' WHERE path ='web/secure/base_url';exit"
 wait
-echo "################### touch index.php, disabeling compiler & cache ################### "
+echo "################### touch index.php, disabeling compiler & cache ################### \n"
 cd $HOMEDIR/$DOCDIR
 php -f index.php >/dev/null
 wait
@@ -102,5 +92,5 @@ wait
 php -f indexer.php reindexall
 wait
 
-echo "###################  done ################### " 
+echo "###################  done ################### \n" 
 

@@ -5,25 +5,12 @@
 ####################################################################
 # backupsite.sh - backup all files and folders in Web DocRoot
 
-#######################
-# DATABASE CONFIG
-DBHOSTS="dbint054241"
-DBNAME="db054241_deterra_production"
-DBUSER="u054241_root" 
-DBPASSWORD="v8&K@S7YTYdXf@ue"
+echo "Reading config...." >&2
+source config.cfg
 
-#######################
-# Config Directories
-HOMEDIR=/home/users/detexftp
-BINDIR=/home/users/detexftp/deterra.nl/bin
-BAKDIR=/home/users/detexftp/deterra.nl/backup
+BINDIR=$HOMEDIR/$DOCDIR/bin
+BAKDIR=$HOMEDIR/$DOCDIR/backup
 # path from homedir to magento folder
-DOCDIR=deterra.nl
-
-
-
-
-
 TIMESTAMP=$(date +%Y%m%d)
 
 
@@ -33,10 +20,6 @@ if [ "$1" != "" ] || [ "$1" = "--help" ]
       echo -e "\nUseage: backupsite.sh (Archive Doc Root to .tgz file)\n"
       exit 1
 fi
-
-
-
-
 
 
 echo -e "\nBeginning Site Archive... \n"
@@ -79,17 +62,17 @@ fi
 ########
 # Database
 
-echo "Beginning backup of MYSQL @ `date`"
+echo "Beginning backup of MYSQL @ `date`\n\n"
 echo
 mysqldump --opt --host=$DBHOSTS -u $DBUSER -p$DBPASSWORD $DBNAME > $BAKDIR/$TIMESTAMP-db.sql
 
 
 if [ -f $BAKDIR/$TIMESTAMP-db.sql ]
    then
-      echo -e "Archive $BAKDIR/$TIMESTAMP-db.sql completed\n"
+      echo -e "Archive $BAKDIR/$TIMESTAMP-db.sql completed\n\n"
    else
-      echo -e "\nWeb Site DATABASE Backup Failed!\n"
+      echo -e "\nWeb Site DATABASE Backup Failed!\n\n"
       exit 1
 fi
 
-echo -e "Site Archive Complete\n"
+echo -e "Site Archive Complete\n\n"

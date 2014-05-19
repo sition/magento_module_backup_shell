@@ -32,8 +32,8 @@ echo -e "Archiving $DOCDIR to file $BAKDIR/$TIMESTAMP-public_html.tgz"
 cd $HOMEDIR/$DOCDIR
 
 tar -czf $BAKDIR/$TIMESTAMP-public_html.tgz --exclude="media/catalog/*" --exclude="media/wysiwyg/*"  \
-         --exclude="var/backups/*"  --exclude="backup/*"  --exclude="var/cache/*"  \
-         --exclude="var/session/*" .
+          --exclude="media/tmp/*" --exclude="var/backups/*"  --exclude="backup/*"  --exclude="var/cache/*"  \
+        --exclude="media/catalog/product/cache/*"  --exclude="var/session/*" .
 
 if [ -f $BAKDIR/$TIMESTAMP-public_html.tgz ]
    then

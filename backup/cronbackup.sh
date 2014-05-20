@@ -5,6 +5,9 @@
 ####################################################################
 # backupsite.sh - backup all files and folders in Web DocRoot
 
+
+php createconfig.php -O /dev/null
+
 echo "Reading config...." >&2
 source config.cfg
 
